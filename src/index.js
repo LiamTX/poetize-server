@@ -6,4 +6,5 @@ app.use(express.json());
 const routes = require('./router/routes');
 app.use(routes);
 
-app.listen(3333, () => console.log('Started!'));
+const port = process.env.PORT || 3333;
+app.listen(port, () => console.log('Started!'));
