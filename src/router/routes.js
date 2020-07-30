@@ -6,16 +6,15 @@ const user = require('../controller/userController');
 const poem = require('../controller/poemController');
 
 router
-    //User
     .get('/api/users', user.index)
     .post('/api/users', user.store)
     .post('/api/users/auth', user.auth)
-    
+    .post('/api/poems', poem.store)
+
 router.use(auth);
 
 router
-    //Poem
     .get('/api/poems', poem.index)
-    .post('/api/poems', poem.store)
+    .delete('/api/poems/:id', poem.delete)
 
 module.exports = router;
