@@ -8,6 +8,6 @@ module.exports = {
 
         const decoded = jwt.verify(token, authConfig.secret);
 
-        return {decoded};
+        return decoded;
     }
 }
