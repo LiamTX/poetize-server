@@ -4,6 +4,7 @@ const auth = require('../config/auth');
 
 const user = require('../controller/userController');
 const poem = require('../controller/poemController');
+const like = require('../controller/likeController');
 
 //Dont need token
 router
@@ -11,12 +12,13 @@ router
     .post('/api/users', user.store)
     .post('/api/users/auth', user.auth)
     .get('/api/poems/:id', poem.getPoemById)
-    .get('/api/poems/likes', poem.likes)
     .put('/api/poems/like/:poem_id', poem.like)
     .put('/api/poems/deslike/:poem_id', poem.deslike)
+    .get('/api/likes', like.index)
+    .get('/api/likes/user', like.getByUser)
 
 //Need token
-router.use(auth);
+// router.use(auth);
 router
     .get('/api/users/token', user.getUser)
     .get('/api/poems', poem.index)

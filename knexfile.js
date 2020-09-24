@@ -5,10 +5,10 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      database: 'bflsvbuhtblyz11k2ive',
-      user: 'uwewegezxljh38zi',
-      password: 'NRlTVRA34hd87p1tUxGh',
-      host: 'bflsvbuhtblyz11k2ive-mysql.services.clever-cloud.com',
+      database: process.env.API_DB,
+      user: process.env.API_USER,
+      password: process.env.API_PASSWORD,
+      host: process.env.API_HOST,
     },
     migrations: {
       tableName: 'knex_migrations',

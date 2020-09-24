@@ -99,24 +99,11 @@ module.exports = {
                 .update({ likes: qtdeLikes.likes - 1 });
 
             const deslike = await knex('likes')
-                            .where('poem_Id', poem_id)
-                            .andWhere('user_id', user_id)
-                            .del();
+                .where('poem_Id', poem_id)
+                .andWhere('user_id', user_id)
+                .del();
 
             return res.json(deslike)
         } catch (error) { return res.json({ erro: error }) }
-    },
-    async likes(req, res){
-        // try {
-        //     // const token = req.header('Authorization');
-        //     // const user_id = (await tokenConfig.decodeToken(token)).id;
-
-        
-        //     return res.json('likes');
-        // } catch (error) { return res.json({ erro: error }) }
-
-        const like = await knex('likes');
-
-        return res.json(like);
     }
 }

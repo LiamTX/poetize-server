@@ -13,9 +13,11 @@ function generateToken(params = {}) {
 
 module.exports = {
     async index(req, res) {
-        const users = await knex('users');
+        try{
+            const users = await knex('users');
 
-        return res.json(users);
+            return res.json(users);
+        }catch(error){return res.json(error)}
     },
     async store(req, res) {
         try {
