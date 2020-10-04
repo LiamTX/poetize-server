@@ -14,6 +14,7 @@ router
 //Nedd token
 router.use(auth);
 router
+    .get('/api/token', user.token)
     .get('/api/poems', poem.index)
     .post('/api/poems', poem.store)
     .get('/api/users/poems', user.getMyPoems)
@@ -24,6 +25,6 @@ router
     .put('/api/poems/deslike/:poem_id', poem.deslike)
     .get('/api/likes', like.index)
     .get('/api/likes/user', like.getByUser)
-
+    .delete('/api/poems/:id', poem.delete)
 
 module.exports = router;

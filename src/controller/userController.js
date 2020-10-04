@@ -71,7 +71,6 @@ module.exports = {
             for (let i = 0; i < poems.length; i++) {
                 let [user] = await knex('users').where('id', poems[i].user_id);
 
-                poems[i].user_id = undefined;
                 user.id = undefined;
                 user.pass = undefined;
                 poems[i].created_by = user;
@@ -125,5 +124,15 @@ module.exports = {
 
             return res.json({query, res: "Atualizado!"})
         }catch(error){return res.json(error)}
+    },
+    async token(req, res){
+        try{
+            const token = req.header('Authorization');
+            const user_id = (await tokenConfig.decodeToken(token)).id;
+
+            return res.json(user_id);
+        }catch(error){
+            return res.json(error)
+        }
     }
 }

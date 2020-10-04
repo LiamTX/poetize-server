@@ -9,7 +9,6 @@ module.exports = {
             for (let i = 0; i < poems.length; i++) {
                 let [user] = await knex('users').where('id', poems[i].user_id);
 
-                poems[i].user_id = undefined;
                 user.id = undefined;
                 user.pass = undefined;
                 poems[i].created_by = user;
@@ -34,19 +33,21 @@ module.exports = {
         }
     },
     async delete(req, res) {
-        const { id } = req.params;
-        const token = req.header('Authorization');
-        const decoded = (await tokenConfig.decodeToken(token)).decoded;
+        try {
+            const { id } = req.params;
+            const token = req.header('Authorization');
+            const user_id = (await tokenConfig.decodeToken(token)).id;
 
-        const [poem] = await knex('poems').where('id', id);
+            const [poem] = await knex('poems').where('id', id);
 
-        if (poem.user_id !== decoded.id) {
-            return res.status(401).json('unauthorized');
-        }
+            if (poem.user_id !== user_id) {
+                return res.status(401).json('unauthorized');
+            }
 
-        const deleted = await knex('poems').where('id', id).del();
+            const deleted = await knex('poems').where('id', id).del();
 
-        return res.json(deleted);
+            return res.json(deleted);
+        } catch (error) { }
     },
     async getPoemById(req, res) {
         const { id } = req.params;
