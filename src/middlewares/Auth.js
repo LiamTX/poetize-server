@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
         return res.status(401).json({error: 'unauthorized'});
     };
 
-    await jwt.verify(token, 'secret', (err, decoded) => {
+    await jwt.verify(token, process.env.NODE_TOKEN_SECRET, (err, decoded) => {
         if(err) return res.status(401).json({error: 'unauthorized'});
 
         req.userEmail = decoded.email;
