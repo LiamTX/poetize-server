@@ -1,138 +1,103 @@
-const knex = require('../db/index');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const MailController = require('../middlewares/MailController/MailController');
+const Token = require('../middlewares/Token');
+const crypto = require('crypto');
 
-const tokenConfig = require('../config/token');
-const authConfig = require('../config/auth.json');
-
-function generateToken(params = {}) {
-    return jwt.sign(params, process.env.SECRET, {
-        expiresIn: 86400,
-    });
-};
 
 module.exports = {
     async index(req, res) {
-        try{
-            const users = await knex('users');
+        try {
+            const users = await User.findAll();
 
             return res.json(users);
-        }catch(error){return res.json(error)}
+        } catch (error) {
+            return res.json(error);
+        }
     },
     async store(req, res) {
         try {
-            const { name, email, password } = req.body;
+            const { name, email, pass } = req.body;
+            const password = await bcrypt.hash(pass, 10);
 
-            var pass = await bcrypt.hash(password, 10);
+            const user = await User.create({ name, email, password });
 
-            await knex('users').insert({ name, email, pass })
-                .then(_ => res.json('Cadastro efetuado!'));
+            const mail = await MailController.storeMail(email);
+
+            return res.json({ mail: mail, user: user })
         } catch (error) {
-            return res.json(error).status(400);
+            return res.json(error);
         }
     },
     async auth(req, res) {
-        const { email, password } = req.body;
-
-        const [user] = await knex('users').where('email', email);
-
-        if (!user) {
-            return res.json({ error: 'O usuario não foi encontrado', status: 404 });
-        }
-
-        if (!await bcrypt.compare(password, user.pass)) {
-            return res.json({ error: 'Algo errado com as informações inseridas!', status: 401 });
-        }
-
-        //user.id = undefined;
-        user.pass = undefined;
-
-        return res.json({ status: 200, user, token: generateToken({ id: user.id }) });
-    },
-    async getUser(req, res) {
         try {
-            const token = req.header('Authorization');
-            const user_id = (await tokenConfig.decodeToken(token)).id;
+            const { email, pass } = req.body;
 
-            const [user] = await knex('users').where('id', user_id);
+            const user = await User.findOne({ where: { email: email } });
 
-            return res.json(user);
-        } catch (error) {
-            return res.json(error)
-        }
-    },
-    async getMyPoems(req, res) {
-        try {
-            const token = req.header('Authorization');
-            const user_id = (await tokenConfig.decodeToken(token)).id;
+            if (!user) {
+                return res.status(404).send({ error: 'User not found!' });
+            };
 
-            const poems = await knex('poems').where('user_id', user_id);
-
-            for (let i = 0; i < poems.length; i++) {
-                let [user] = await knex('users').where('id', poems[i].user_id);
-
-                user.id = undefined;
-                user.pass = undefined;
-                poems[i].created_by = user;
+            if (!await bcrypt.compare(pass, user.password)) {
+                return res.status(401).send({ error: 'Unauthorized' });
             }
 
-            return res.json(poems);
-        } catch (error) {
+            user.password = undefined;
 
+            return res.json({ token: Token.generateToken({ email: user.email }) });
+        } catch (error) {
+            return res.json(error);
         }
     },
-    async edit(req, res) {
-        try{
-            const token = req.header('Authorization');
-            const user_id = (await tokenConfig.decodeToken(token)).id;
+    async forgotPassword(req, res) {
+        try {
+            const { email } = req.body;
 
-            const {name, email, password} = req.body;
+            const user = await User.findOne({ where: { email: email } });
 
-            let query = "";
+            if (!user) return res.status(404).send({ error: 'User not found!' });
 
-            const validate = () => {
-                if(name == "" || name == undefined
-                    || email == "" || email == undefined){
-                        return false;
-                }
+            const token = crypto.randomBytes(20).toString('hex');
 
-                return true;
-            };
+            const now = new Date();
+            now.setHours(now.getHours() + 1);
 
-            if(password != undefined){
-                if(!validate()){
-                    return res.json({error: 'E-mail ou senha não informados'});
-                };
+            await User.update({
+                password_reset_token: token,
+                password_reset_expires: now
+            }, { where: { id: user.id } });
 
-                query = await knex('users').where('id', user_id)
-                .update({
-                    name: name,
-                    email: email,
-                    pass: await bcrypt.hash(password, 10)
-                });
-            }else{
-                if(!validate()){
-                    return res.json({error: 'E-mail ou senha não informados'});
-                };
+            const mail = await MailController.forgotPassMail(email, token);
 
-                query = await knex('users').where('id', user_id)
-                .update({
-                    name: name,
-                    email: email
-                });
-            };
-
-            return res.json({query, res: "Atualizado!"})
-        }catch(error){return res.json(error)}
+            console.log(token, now, mail)
+        } catch (error) {
+            return res.json(error);
+        }
     },
-    async token(req, res){
-        try{
-            const token = req.header('Authorization');
-            const user_id = (await tokenConfig.decodeToken(token)).id;
+    async resetPassword(req, res){
+        try {
+            const {email, token, new_password} = req.body;
+            
+            const user = await User.findOne({ where: { email: email } });
 
-            return res.json(user_id);
-        }catch(error){
-            return res.json(error)
+            if (!user) return res.status(404).send({ error: 'User not found!' });
+
+            if(token != user.password_reset_token) return res.status(404).send({ error: 'Token invalid!' });
+
+            const now = new Date();
+
+            if(now > user.password_reset_expires) return res.status(404).send({ error: 'Token expired!' });
+            
+            const hash = await bcrypt.hash(new_password, 10);
+
+            await user.update({
+                password: hash
+            }, {where: {id: user.id}});
+
+            return res.send();
+        } catch (error) {
+            return res.json(error);
         }
     }
 }

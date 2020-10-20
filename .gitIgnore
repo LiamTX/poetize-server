@@ -1,5 +1,2 @@
-node_modules/
-src/db/migrations/
-knexfile.js
+node_modules
 .env
-src/config/auth.json

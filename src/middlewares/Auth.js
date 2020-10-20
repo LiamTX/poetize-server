@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const authConfig = require('../config/auth.json');
 
 module.exports = async (req, res, next) => {
     const header = req.header('Authorization');
@@ -20,10 +19,10 @@ module.exports = async (req, res, next) => {
         return res.status(401).json({error: 'unauthorized'});
     };
 
-    await jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    await jwt.verify(token, 'secret', (err, decoded) => {
         if(err) return res.status(401).json({error: 'unauthorized'});
 
-        req.userId = decoded.id;
+        req.userEmail = decoded.email;
         return next();
     });
 }

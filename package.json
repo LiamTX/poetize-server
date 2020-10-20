@@ -1,31 +1,28 @@
 {
-  "name": "poetize-api",
-  "version": "1.0.0",
-  "main": "src/index.js",
+  "name": "poetize",
+  "version": "2.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "dev": "nodemon src/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LiamTX/poetize-api.git"
+  "author": "Liam",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "materialize-css": "^1.0.0-rc.2",
+    "mysql2": "^2.2.5",
+    "nodemailer": "^6.4.14",
+    "nodemailer-express-handlebars": "^4.0.0",
+    "path": "^0.12.7",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
-  },
-  "dependencies": {
-    "bcrypt": "^5.0.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "helmet": "^3.23.3",
-    "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.2",
-    "mysql": "^2.18.1",
-    "nodemailer": "^6.4.11",
-    "nodemailer-express-handlebars": "^4.0.0",
-    "path": "^0.12.7",
-    "sqlite3": "^5.0.0"
   }
 }
