@@ -7,9 +7,9 @@ class Poem extends Model {
             poem: DataTypes.TEXT
         }, { sequelize })
     };
-    static associate(models){
+    static associate(models) {
         //O poema 
-        this.belongsTo(models.User, {foreignKey: 'user_id', as: 'user'})
+        this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' })
     }
 };
 

@@ -4,7 +4,6 @@ const MailController = require('../middlewares/MailController/MailController');
 const Token = require('../middlewares/Token');
 const crypto = require('crypto');
 
-
 module.exports = {
     async index(req, res) {
         try {
@@ -43,8 +42,6 @@ module.exports = {
                 return res.status(401).send({ error: 'Unauthorized' });
             }
 
-            user.password = undefined;
-
             return res.json({ token: Token.generateToken({ email: user.email }) });
         } catch (error) {
             return res.json(error);
@@ -75,25 +72,25 @@ module.exports = {
             return res.json(error);
         }
     },
-    async resetPassword(req, res){
+    async resetPassword(req, res) {
         try {
-            const {email, token, new_password} = req.body;
-            
+            const { email, token, new_password } = req.body;
+
             const user = await User.findOne({ where: { email: email } });
 
             if (!user) return res.status(404).send({ error: 'User not found!' });
 
-            if(token != user.password_reset_token) return res.status(404).send({ error: 'Token invalid!' });
+            if (token != user.password_reset_token) return res.status(404).send({ error: 'Token invalid!' });
 
             const now = new Date();
 
-            if(now > user.password_reset_expires) return res.status(404).send({ error: 'Token expired!' });
-            
+            if (now > user.password_reset_expires) return res.status(404).send({ error: 'Token expired!' });
+
             const hash = await bcrypt.hash(new_password, 10);
 
             await user.update({
                 password: hash
-            }, {where: {id: user.id}});
+            }, { where: { id: user.id } });
 
             return res.send();
         } catch (error) {
