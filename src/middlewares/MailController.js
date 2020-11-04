@@ -1,10 +1,10 @@
-const transportConfig = require('../../config/mailTransport');
+const transportConfig = require('../config/mailTransport');
 const hbs = require('nodemailer-express-handlebars');
 const exphs = require('express-handlebars');
 const path = require('path');
 const { resolve } = require('path');
 
-const viewPath = path.resolve(__dirname, '../', '../', 'views', 'Mail');
+const viewPath = path.resolve(__dirname, '../', 'views', 'Mail');
 
 transportConfig.use('compile', hbs({
     viewEngine: exphs.create({

@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const MailController = require('../middlewares/MailController/MailController');
+const MailController = require('../middlewares/MailController');
 const Token = require('../middlewares/Token');
 const crypto = require('crypto');
 
@@ -67,7 +67,7 @@ module.exports = {
 
             const mail = await MailController.forgotPassMail(email, token);
 
-            console.log(token, now, mail)
+            return res.json(true);
         } catch (error) {
             return res.json(error);
         }
