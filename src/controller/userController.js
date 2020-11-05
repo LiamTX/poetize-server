@@ -4,6 +4,9 @@ const MailController = require('../middlewares/MailController');
 const Token = require('../middlewares/Token');
 const crypto = require('crypto');
 
+const cloud = require('cloudinary').v2;
+const formidable = require('formidable');
+
 module.exports = {
     async index(req, res) {
         try {
@@ -12,6 +15,15 @@ module.exports = {
             return res.json(users);
         } catch (error) {
             return res.json(error);
+        }
+    },
+    async getThis(req, res) {
+        try {
+            const user = await User.findOne({ where: { email: req.userEmail } });
+
+            return res.json(user);
+        } catch (error) {
+            return res.json(error)
         }
     },
     async store(req, res) {
@@ -94,6 +106,68 @@ module.exports = {
 
             return res.send();
         } catch (error) {
+            return res.json(error);
+        }
+    },
+    async avatarTest(req, res) {
+        try {
+            // const avatar = req.body;
+
+            cloud.config({
+                cloud_name: 'liamcabral',
+                api_key: '126738514827595',
+                api_secret: 'A7K_M7CluA2mWK-ivTJDPTX9-8M'
+            })
+
+            let form = new formidable.IncomingForm({
+                uploadDir: './src/views/upload',
+                keepExtensions: true
+            });
+
+            form.parse(req, async (err, fields, files) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                };
+
+                await cloud.uploader.upload(files.avatar.path, (error, result) => {
+                    if(error){
+                        console.log(error);
+                        return;
+                    }
+
+                    console.log('cloud success: ' + result.secure_url);
+                })
+
+                return res.json({
+                    files
+                })
+
+            });
+
+            // return res.send(req.body);'
+
+            // cloud.config({
+            //     cloud_name: 'liamcabral',
+            //     api_key: '126738514827595',
+            //     api_secret: 'A7K_M7CluA2mWK-ivTJDPTX9-8M'
+            // });
+
+            // cloud.uploader.upload(avatar, {
+            //     resource_type: " image ",
+            //     overwrite: true,
+            // }, (error, result)=> {
+            //     if(error){
+            //         console.log(error)
+            //     };
+
+            //     console.log(result);
+            // })
+
+            // // console.log('avatar ' + avatar)
+            // return res.json(avatar)
+        } catch (error) {
+            console.log(error)
             return res.json(error);
         }
     }
