@@ -126,7 +126,8 @@ module.exports = {
 
             form.parse(req, async (err, fields, files) => {
                 if (err) {
-                    console.log(err);
+                    console.log(files == undefined);
+                    console.log('erro: ' + err);
                     return;
                 };
 
@@ -139,10 +140,7 @@ module.exports = {
                     console.log('cloud success: ' + result.secure_url);
                 })
 
-                return res.json({
-                    files
-                })
-
+                return res.send(req.body)
             });
 
             // return res.send(req.body);'
@@ -167,7 +165,7 @@ module.exports = {
             // // console.log('avatar ' + avatar)
             // return res.json(avatar)
         } catch (error) {
-            console.log(error)
+            console.log(error);
             return res.json(error);
         }
     }
