@@ -3,8 +3,7 @@ const bcrypt = require('bcrypt');
 const MailController = require('../middlewares/MailController');
 const Token = require('../middlewares/Token');
 const crypto = require('crypto');
-
-const cloud = require('cloudinary').v2;
+const cloudinary = require('../middlewares/Cloudinary');
 const formidable = require('formidable');
 
 module.exports = {
@@ -28,15 +27,17 @@ module.exports = {
     },
     async store(req, res) {
         try {
-            const { name, email, pass } = req.body;
+            const { avatar, name, email, pass } = req.body;
+
             const password = await bcrypt.hash(pass, 10);
 
-            const user = await User.create({ name, email, password });
+            const user = await User.create({ avatar, name, email, password });
 
-            const mail = await MailController.storeMail(email);
+            // const mail = await MailController.storeMail(email);
 
-            return res.json({ mail: mail, user: user })
+            return res.json({ user: user })
         } catch (error) {
+            console.log(error)
             return res.json(error);
         }
     },
@@ -109,63 +110,55 @@ module.exports = {
             return res.json(error);
         }
     },
-    async avatarTest(req, res) {
+    async update(req, res) {
         try {
-            // const avatar = req.body;
+            const { avatar, name, email, new_pass } = req.body;
 
-            cloud.config({
-                cloud_name: 'liamcabral',
-                api_key: '126738514827595',
-                api_secret: 'A7K_M7CluA2mWK-ivTJDPTX9-8M'
-            })
+            const user = await User.findOne({ where: { email: req.userEmail } });
 
+            if (!user) return res.status(404).send({ error: 'User not found' });
+
+            let pass = undefined;
+
+            if (new_pass != undefined) {
+                pass = await bcrypt.hash(new_pass, 10);
+            };
+
+            let token = undefined;
+
+            if (email != undefined) {
+                token = Token.generateToken({ email: email });
+            };
+
+            await user.update({
+                avatar: avatar,
+                name: name,
+                email: email,
+                password: pass
+            }, { where: { id: user.id } });
+
+            return res.json({token: token});
+        } catch (error) {
+            return res.json(error);
+        }
+    },
+    async uploadAvatar(req, res) {
+        try {
             let form = new formidable.IncomingForm({
-                uploadDir: './src/views/upload',
+                // uploadDir: './src/views/upload',
                 keepExtensions: true
             });
 
             form.parse(req, async (err, fields, files) => {
                 if (err) {
-                    console.log(files == undefined);
-                    console.log('erro: ' + err);
-                    return;
+                    return res.json(error);
                 };
 
-                await cloud.uploader.upload(files.avatar.path, (error, result) => {
-                    if(error){
-                        console.log(error);
-                        return;
-                    }
+                const url = await cloudinary.uploader(files.avatar.path);
 
-                    console.log('cloud success: ' + result.secure_url);
-                })
-
-                return res.send(req.body)
+                return res.json(url);
             });
-
-            // return res.send(req.body);'
-
-            // cloud.config({
-            //     cloud_name: 'liamcabral',
-            //     api_key: '126738514827595',
-            //     api_secret: 'A7K_M7CluA2mWK-ivTJDPTX9-8M'
-            // });
-
-            // cloud.uploader.upload(avatar, {
-            //     resource_type: " image ",
-            //     overwrite: true,
-            // }, (error, result)=> {
-            //     if(error){
-            //         console.log(error)
-            //     };
-
-            //     console.log(result);
-            // })
-
-            // // console.log('avatar ' + avatar)
-            // return res.json(avatar)
         } catch (error) {
-            console.log(error);
             return res.json(error);
         }
     }

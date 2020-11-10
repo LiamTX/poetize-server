@@ -5,6 +5,19 @@ module.exports = {
     async index(req, res) {
         return res.json(await Poem.findAll());
     },
+    async getByUser(req, res) {
+        try {
+            const user = await User.findOne({ where: { email: req.userEmail } });
+
+            if (!user) return res.status(404).send({ error: 'User not found' });
+
+            const poems = await Poem.findAll({ where: { user_id: user.id } });
+
+            return res.json(poems);
+        } catch (error) {
+            return res.json(error);
+        }
+    },
     async store(req, res) {
         try {
             const user = await User.findOne({ where: { email: req.userEmail } });
