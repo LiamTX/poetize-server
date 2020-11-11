@@ -120,13 +120,15 @@ module.exports = {
 
             let pass = undefined;
 
-            if (new_pass != undefined) {
+            if (new_pass != "") {
+                console.log('senha alterou');
                 pass = await bcrypt.hash(new_pass, 10);
             };
 
             let token = undefined;
 
-            if (email != undefined) {
+            if (email != user.email) {
+                console.log('email alterou')
                 token = Token.generateToken({ email: email });
             };
 
@@ -137,7 +139,7 @@ module.exports = {
                 password: pass
             }, { where: { id: user.id } });
 
-            return res.json({token: token});
+            return res.json({ token: token });
         } catch (error) {
             return res.json(error);
         }

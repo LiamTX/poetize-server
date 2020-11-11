@@ -3,7 +3,15 @@ const User = require('../models/User');
 
 module.exports = {
     async index(req, res) {
-        return res.json(await Poem.findAll());
+        const poems = await Poem.findAll();
+
+        for(let i = 0; i < poems.length; i++){
+            let user = await User.findByPk(poems[i].user_id);
+
+            poems[i].user_id = user;
+        }
+
+        return res.json(poems);
     },
     async getByUser(req, res) {
         try {
@@ -12,6 +20,10 @@ module.exports = {
             if (!user) return res.status(404).send({ error: 'User not found' });
 
             const poems = await Poem.findAll({ where: { user_id: user.id } });
+
+            for(let i = 0; i < poems.length; i++){
+                poems[i].user_id = user;
+            }
 
             return res.json(poems);
         } catch (error) {

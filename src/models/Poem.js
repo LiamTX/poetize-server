@@ -4,7 +4,7 @@ class Poem extends Model {
     static init(sequelize) {
         super.init({
             title: DataTypes.STRING,
-            poem: DataTypes.TEXT
+            poem: DataTypes.TEXT,
         }, { sequelize })
     };
     static associate(models) {
