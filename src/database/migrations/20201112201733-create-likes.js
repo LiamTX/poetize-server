@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('poems', {
+    await queryInterface.createTable('likes', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -8,20 +10,21 @@ module.exports = {
         unique: true,
         autoIncrement: true
       },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      poem: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-      },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      poem_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'poems',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -35,10 +38,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       }
-    });
+    })
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('poems');
+    await queryInterface.dropTable('likes')
   }
 };

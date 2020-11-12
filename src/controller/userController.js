@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Like = require('../models/Likes');
 const bcrypt = require('bcrypt');
 const MailController = require('../middlewares/MailController');
 const Token = require('../middlewares/Token');
@@ -160,6 +161,19 @@ module.exports = {
 
                 return res.json(url);
             });
+        } catch (error) {
+            return res.json(error);
+        }
+    },
+    async getMyLikes(req, res) {
+        try {
+            const user = await User.findOne({ where: { email: req.userEmail } });
+
+            if (!user) return res.status(404).send({ error: 'User not found' });
+
+            const likes = await Like.findAll({ where: { user_id: user.id } });
+
+            return res.json(likes);
         } catch (error) {
             return res.json(error);
         }
