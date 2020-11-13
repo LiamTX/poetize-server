@@ -12,6 +12,8 @@ module.exports = {
             poems[i].user_id = user;
         }
 
+        poems.reverse();
+
         return res.json(poems);
     },
     async getByUser(req, res) {
