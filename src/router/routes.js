@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require('../middlewares/Auth');
 
 const UserController = require('../controller/UserController');
-const PoemController = require('../controller/PoemController');
+const PoemController = require('../controller/PoemController')
 
 //Public
 //Users
