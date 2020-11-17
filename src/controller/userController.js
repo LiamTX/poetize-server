@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Like = require('../models/Likes');
+const Faq = require('../models/FAQ');
 const bcrypt = require('bcrypt');
 const MailController = require('../middlewares/MailController');
 const Token = require('../middlewares/Token');
@@ -174,6 +175,22 @@ module.exports = {
             const likes = await Like.findAll({ where: { user_id: user.id } });
 
             return res.json(likes);
+        } catch (error) {
+            return res.json(error);
+        }
+    },
+    async FAQ(req, res) {
+        try {
+            const user = await User.findOne({ where: { email: req.userEmail } });
+            const { text } = req.body;
+
+            if (!user) return res.status(404).send({ error: 'User not found' });
+
+            const user_id = user.id;
+
+            const faq = await Faq.create({ user_id, text });
+            
+            return res.json(faq);
         } catch (error) {
             return res.json(error);
         }

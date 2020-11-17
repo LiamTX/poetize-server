@@ -108,5 +108,20 @@ module.exports = {
         } catch (error) {
             return res.json(error);
         }
+    },
+    async getMyLikes(req, res) {
+        try {
+            const { poem_id } = req.params;
+
+            const poem = await Poem.findByPk(poem_id);
+
+            if (!poem) return res.status(404).send({ error: 'Poem not found' });
+
+            const likes = await Like.findAll({ where: { poem_id: poem_id } });
+
+            return res.json(likes);
+        } catch (error) {
+            return res.json(error);
+        }
     }
 }

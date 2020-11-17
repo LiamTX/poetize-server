@@ -30,7 +30,8 @@ module.exports = {
       },
       confirmed: {
           type: Sequelize.BOOLEAN,
-          allowNull: true
+          defaultValue: false,
+          allowNull: false
       },
       password_reset_expires: {
           type: Sequelize.DATE,
