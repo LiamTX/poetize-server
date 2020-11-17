@@ -12,6 +12,6 @@ require('./database/index');
 app.use(express.json());
 app.use(routes);
 
-let port = 3333 || process.env.PORT;
+let port = process.env.PORT || 3333;
 
 app.listen(port, () => console.log('Started!'));
