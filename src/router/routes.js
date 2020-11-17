@@ -9,30 +9,31 @@ const PoemController = require('../controller/PoemController');
 router.get('/', (req, res) => res.json('Hello app'));
 //Public
 //Users
-router.post('/api/users', UserController.store);
-router.get('/api/users', UserController.index);
-router.post('/api/users/auth', UserController.auth);
-router.post('/api/users/forgot_password', UserController.forgotPassword);
-router.post('/api/users/reset_password', UserController.resetPassword);
-router.post('/api/users/upload_avatar', UserController.uploadAvatar);
+router
+.post('/api/users', UserController.store)
+.get('/api/users', UserController.index)
+.post('/api/users/auth', UserController.auth)
+.post('/api/users/forgot_password', UserController.forgotPassword)
+.post('/api/users/reset_password', UserController.resetPassword)
+.post('/api/users/upload_avatar', UserController.uploadAvatar);
 //Poems
 
 //Private
 router.use(auth);
 //Users
-
-
-router.get('/api/users/this', UserController.getThis);
-router.put('/api/users', UserController.update);
-router.get('/api/users/likes', UserController.getMyLikes);
-router.post('/api/users/faq', UserController.FAQ);
+router
+.get('/api/users/this', UserController.getThis)
+.put('/api/users', UserController.update)
+.get('/api/users/likes', UserController.getMyLikes)
+.post('/api/users/faq', UserController.FAQ);
 //Poems
-router.get('/api/poems', PoemController.index);
-router.get('/api/poems/my', PoemController.getByUser);
-router.post('/api/poems', PoemController.store);
-router.delete('/api/poems/:poem_id', PoemController.delete);
-router.post('/api/poems/like/:id', PoemController.like);
-router.delete('/api/poems/like/:id', PoemController.dislike);
-router.get('/api/poems/like/:poem_id', PoemController.getMyLikes);
+router
+.get('/api/poems', PoemController.index)
+.get('/api/poems/my', PoemController.getByUser)
+.post('/api/poems', PoemController.store)
+.delete('/api/poems/:poem_id', PoemController.delete)
+.post('/api/poems/like/:id', PoemController.like)
+.delete('/api/poems/like/:id', PoemController.dislike)
+.get('/api/poems/like/:poem_id', PoemController.getMyLikes);
 
 module.exports = router;
