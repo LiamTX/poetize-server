@@ -16,7 +16,6 @@ router
 .post('/api/users/forgot_password', UserController.forgotPassword)
 .post('/api/users/reset_password', UserController.resetPassword)
 .post('/api/users/upload_avatar', UserController.uploadAvatar);
-//Poems
 
 //Private
 router.use(auth);
@@ -34,6 +33,7 @@ router
 .delete('/api/poems/:poem_id', PoemController.delete)
 .post('/api/poems/like/:id', PoemController.like)
 .delete('/api/poems/like/:id', PoemController.dislike)
-.get('/api/poems/like/:poem_id', PoemController.getMyLikes);
+.get('/api/poems/like/:poem_id', PoemController.getMyLikes)
+.get('/api/poems/:poem_id', PoemController.getById);
 
 module.exports = router;

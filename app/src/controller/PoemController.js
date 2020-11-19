@@ -102,9 +102,7 @@ module.exports = {
 
             const like = await Like.findOne({ where: { user_id: user_id, poem_id: poem_id } });
 
-            await like.destroy();
-
-            return res.send();
+            return res.json(await like.destroy());
         } catch (error) {
             return res.json(error);
         }
@@ -120,6 +118,25 @@ module.exports = {
             const likes = await Like.findAll({ where: { poem_id: poem_id } });
 
             return res.json(likes);
+        } catch (error) {
+            return res.json(error);
+        }
+    },
+    async getById(req, res) {
+        try {
+            const { poem_id } = req.params;
+            const poem = await Poem.findByPk(poem_id);
+            const user = await User.findByPk(poem.user_id);
+
+            user.password = undefined;
+            user.password_reset_token = undefined;
+            user.password_reset_expires = undefined;
+
+            if (!poem) return res.status(404).send({ error: 'Poem not found' });
+
+            poem.user_id = user;
+
+            return res.json(poem);
         } catch (error) {
             return res.json(error);
         }
