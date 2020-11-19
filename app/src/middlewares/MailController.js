@@ -4,6 +4,8 @@ const exphs = require('express-handlebars');
 const path = require('path');
 const { resolve } = require('path');
 
+const testTeamplateEmail = require('../views/Mail/test.html')
+
 const viewPath = path.resolve(__dirname, '../', 'views', 'Mail');
 
 transportConfig.use('compile', hbs({
@@ -26,7 +28,7 @@ module.exports = {
                 from: 'Poetize <poetizeando@gmail.com>',
                 to: to,
                 subject: 'Confirmação de e-mail',
-                template: 'store'
+                html: testTeamplateEmail
             };
 
             const mail = await transportConfig.sendMail(mailOptions);
