@@ -2,20 +2,20 @@ const express = require('express');
 const app = express();
 
 const cors = require('cors');
-const corsOptions = {
-    origin: 'https://poetize.netlify.app',
-    optionsSuccessStatus: 200
-}
+// const corsOptions = {
+//     origin: 'https://poetize.netlify.app',
+//     optionsSuccessStatus: 200
+// }
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "https://poetize.netlify.app")
-//     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
-//     app.use(cors());
-//     next();
-// })
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://poetize.netlify.app")
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+    app.use(cors());
+    next();
+})
 
 // app.use((req, res, next) => {
 //     app.use(cors());
