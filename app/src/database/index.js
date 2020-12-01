@@ -13,9 +13,11 @@ const Faq = require('../models/FAQ');
 
 const connection = new Sequelize('bpx0x2htivtugqdrjoow', 'uriie3qgh5k7rdae', 'U6ssTaVtvvJmPUSFtI3H', {
     host: 'bpx0x2htivtugqdrjoow-mysql.services.clever-cloud.com',
-    dialect: 'mysql'
-})
-
+    dialect: 'mysql',
+    define: {
+        freezeTableName: true
+    }
+});
 
 User.init(connection);
 Poem.init(connection);
@@ -24,6 +26,5 @@ Faq.init(connection);
 
 User.associate(connection.models);
 Poem.associate(connection.models);
-// Like.associate(connection.models);
 
 module.exports = connection;
