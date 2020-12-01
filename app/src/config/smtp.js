@@ -1,7 +1,7 @@
 //configurações do smtp para envio de e-mails
 module.exports = {
-    host: 'smtp.gmail.com',
-    port: 587,
-    user: 'poetizeando@gmail.com',
-    password: 'Poetize@1514'
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    user: process.env.EMAIL_USER,
+    password: process.env.EMAIL_PASSWORD
 }
