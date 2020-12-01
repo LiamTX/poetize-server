@@ -14,7 +14,7 @@ class users extends Model {
 
     };
     static associate(models) {
-        this.hasMany(models.Poem, { foreignKey: 'user_id', as: 'poem' })
+        this.hasMany(models.poems, { foreignKey: 'user_id', as: 'poem' })
     }
 };
 
