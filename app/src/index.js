@@ -5,12 +5,9 @@ const cors = require('cors');
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*")
-    res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
-    app.use(cors());
-    next();
-})
+app.use(cors({
+    origin: 'https://poetize.netlify.app'
+}))
 
 require('dotenv').config();
 
