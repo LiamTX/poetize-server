@@ -5,7 +5,7 @@ class likes extends Model {
         super.init({
             user_id: DataTypes.INTEGER,
             poem_id: DataTypes.INTEGER,
-        }, { sequelize, modelName: 'Like' })
+        }, { sequelize })
     }
 };
 

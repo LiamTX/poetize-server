@@ -5,7 +5,7 @@ class faqs extends Model {
         super.init({
             user_id: DataTypes.INTEGER,
             text: DataTypes.TEXT,
-        }, { sequelize, modelName: 'Faq' })
+        }, { sequelize })
     }
 };
 
