@@ -11,9 +11,9 @@ const transport = nodemailer.createTransport({
         user: smtpConfig.user,
         pass: smtpConfig.password
     },
-    // tls: {
-    //     rejectUnauthorized: false
-    // }
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 
 
