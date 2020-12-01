@@ -15,7 +15,8 @@ const connection = new Sequelize('bpx0x2htivtugqdrjoow', 'uriie3qgh5k7rdae', 'U6
     host: 'bpx0x2htivtugqdrjoow-mysql.services.clever-cloud.com',
     dialect: 'mysql',
     define: {
-        freezeTableName: true
+        freezeTableName: true,
+        underscored: true
     }
 });
 

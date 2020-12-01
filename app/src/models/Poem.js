@@ -4,9 +4,7 @@ class poems extends Model {
     static init(sequelize) {
         super.init({
             title: DataTypes.STRING,
-            poem: DataTypes.TEXT,
-            created_at: DataTypes.DATE,
-            updated_at: DataTypes.DATE
+            poem: DataTypes.TEXT
         }, { sequelize })
     };
     static associate(models) {
