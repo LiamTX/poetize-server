@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 
-class Like extends Model {
+class likes extends Model {
     static init(sequelize) {
         super.init({
             user_id: DataTypes.INTEGER,
@@ -9,4 +9,4 @@ class Like extends Model {
     }
 };
 
-module.exports = Like;
+module.exports = likes;
