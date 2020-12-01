@@ -6,7 +6,10 @@ const Poem = require('../models/Poem');
 const Like = require('../models/Likes');
 const Faq = require('../models/FAQ');
 
-const connection = new Sequelize(dbConfig);
+const connection = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+    host: dbConfig.host,
+    dialect: 'mysql'
+});
 
 User.init(connection);
 Poem.init(connection);
