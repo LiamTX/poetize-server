@@ -2,15 +2,18 @@ const express = require('express');
 const app = express();
 
 const cors = require('cors');
-app.use((req, res, next) => {
-    //Qual site tem permissão de realizar a conexão, no exemplo abaixo está o "*" indicando que qualquer site pode fazer a conexão
-    res.header("Access-Control-Allow-Origin", "https://poetize.netlify.app");
-    //Quais são os métodos que a conexão pode realizar na API
-    res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
-    app.use(cors());
-    next();
-});
+const corsOptions = {
+    origin: 'https://poetize.netlify.app',
+    optionsSuccessStatus: 200
+}
+
 app.use(express.json());
+app.use(cors(corsOptions));
+
+// app.use((req, res, next) => {
+//     app.use(cors());
+//     next();
+// });
 
 require('dotenv').config();
 
@@ -21,4 +24,4 @@ app.use(routes);
 
 let port = process.env.PORT || 3333;
 
-app.listen(port, () => { console.log('Started!') });
+app.listen(port, () => {console.log('Started!')});
