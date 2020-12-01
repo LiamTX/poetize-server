@@ -7,7 +7,11 @@ app.use(express.json());
 
 // app.use(cors());
 
-app.options('*', cors());
+app.use(cors({
+    origin: true,
+    methods: ['GET', 'PUT', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 require('dotenv').config();
 
