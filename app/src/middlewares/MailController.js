@@ -4,8 +4,6 @@ const exphs = require('express-handlebars');
 const path = require('path');
 const { resolve } = require('path');
 
-const testTeamplateEmail = require('../views/Mail/test.html')
-
 const viewPath = path.resolve(__dirname, '../', 'views', 'Mail');
 
 transportConfig.use('compile', hbs({
@@ -18,7 +16,6 @@ transportConfig.use('compile', hbs({
     viewPath,
     extName: '.hbs'
 }));
-
 
 //Controller dos envios de e-mail
 module.exports = {

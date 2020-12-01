@@ -80,7 +80,7 @@ module.exports = {
                 password_reset_expires: now
             }, { where: { id: user.id } });
 
-            const mail = await MailController.forgotPassMail(email, token);
+            await MailController.forgotPassMail(email, token);
 
             return res.json(true);
         } catch (error) {
