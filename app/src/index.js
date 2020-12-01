@@ -8,14 +8,14 @@ const corsOptions = {
 }
 
 app.use(express.json());
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://poetize.netlify.app")
-    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
-    app.use(cors());
-    next();
-})
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "https://poetize.netlify.app")
+//     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+//     app.use(cors());
+//     next();
+// })
 
 // app.use((req, res, next) => {
 //     app.use(cors());
