@@ -9,8 +9,9 @@ app.use(express.json());
 
 app.use(cors({
     origin: true,
-    methods: ['GET', 'PUT', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    credentials: true,
+    optionsSuccessStatus: 204 
 }))
 
 require('dotenv').config();
