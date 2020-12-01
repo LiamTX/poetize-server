@@ -82,7 +82,7 @@ module.exports = {
 
             const mail = await MailController.forgotPassMail(email, token);
 
-            return res.json(true);
+            return res.json(mail);
         } catch (error) {
             return res.json(error);
         }
