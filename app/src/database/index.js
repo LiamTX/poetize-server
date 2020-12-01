@@ -11,6 +11,8 @@ const connection = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.
     dialect: 'mysql'
 });
 
+console.log(connection)
+
 User.init(connection);
 Poem.init(connection);
 Like.init(connection);
