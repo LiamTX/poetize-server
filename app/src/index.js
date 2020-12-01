@@ -5,17 +5,12 @@ const cors = require('cors');
 
 app.use(express.json());
 
-var whitelist = ['https://poetize.netlify.app', 'http://localhost:3333']
-app.use(cors({
-    origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-    optionsSuccessStatus: 200
-}))
+app.use((req, res, next) => {
+    req.header("Access-Control-Allow-Origin", "*")
+    req.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+    app.use(cors());
+    next();
+})
 
 require('dotenv').config();
 
