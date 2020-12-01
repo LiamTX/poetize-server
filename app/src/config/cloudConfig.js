@@ -1,5 +1,5 @@
 module.exports = {
-    cloud_name: 'liamcabral',
-    api_key: '126738514827595',
-    api_secret: 'A7K_M7CluA2mWK-ivTJDPTX9-8M'
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
 }
