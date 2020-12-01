@@ -10,6 +10,8 @@ class users extends Model {
             confirmed: DataTypes.BOOLEAN,
             password_reset_token: DataTypes.STRING,
             password_reset_expires: DataTypes.DATE,
+            created_at: DataTypes.DATE,
+            updated_at: DataTypes.DATE
         }, { sequelize })
 
     };
