@@ -6,12 +6,16 @@ const Poem = require('../models/Poem');
 const Like = require('../models/Likes');
 const Faq = require('../models/FAQ');
 
-const connection = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
-    host: dbConfig.host,
-    dialect: 'mysql'
-});
+// const connection = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+//     host: dbConfig.host,
+//     dialect: 'mysql'
+// });
 
-console.log(connection)
+const connection = new Sequelize('bpx0x2htivtugqdrjoow', 'uriie3qgh5k7rdae', 'U6ssTaVtvvJmPUSFtI3H', {
+    host: 'bpx0x2htivtugqdrjoow-mysql.services.clever-cloud.com',
+    dialect: 'mysql'
+})
+
 
 User.init(connection);
 Poem.init(connection);
