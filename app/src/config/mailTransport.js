@@ -4,8 +4,10 @@ const smtpConfig = require('./smtp');
 
 //Configuração do "transportador" que ira enviar os e-mails
 const transport = nodemailer.createTransport({
-    host: smtpConfig.host,
-    port: smtpConfig.port,
+    
+    // host: smtpConfig.host,
+    // port: smtpConfig.port,
+    service: 'Gmail',
     secure: false,
     auth: {
         user: smtpConfig.user,
