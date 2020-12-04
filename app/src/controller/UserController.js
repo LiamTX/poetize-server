@@ -117,20 +117,21 @@ module.exports = {
             const { avatar, name, email, new_pass } = req.body;
 
             const user = await User.findOne({ where: { email: req.userEmail } });
+            const user_existing = await User.findOne({ where: { email: email } });
 
             if (!user) return res.status(404).send({ error: 'User not found' });
+            console.log(user_existing)
+            if (user_existing) return res.status(401).send({ error: 'existing email' });
 
             let pass = undefined;
 
             if (new_pass != "") {
-                console.log('senha alterou');
                 pass = await bcrypt.hash(new_pass, 10);
             };
 
             let token = undefined;
 
             if (email != user.email) {
-                console.log('email alterou')
                 token = Token.generateToken({ email: email });
             };
 
@@ -189,13 +190,13 @@ module.exports = {
             const user_id = user.id;
 
             const faq = await Faq.create({ user_id, text });
-            
+
             return res.json(faq);
         } catch (error) {
             return res.json(error);
         }
     },
-    async authToken(req, res){
+    async authToken(req, res) {
         return res.json();
     }
 }
