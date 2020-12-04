@@ -194,5 +194,8 @@ module.exports = {
         } catch (error) {
             return res.json(error);
         }
+    },
+    async authToken(req, res){
+        return res.json();
     }
 }

@@ -21,6 +21,7 @@ router
 router.use(auth);
 //Users
 router
+.get('/api/users/auth/token', UserController.authToken)
 .get('/api/users/this', UserController.getThis)
 .put('/api/users', UserController.update)
 .get('/api/users/likes', UserController.getMyLikes)
