@@ -22,6 +22,8 @@ module.exports = {
         try {
             const user = await User.findOne({ where: { email: req.userEmail } });
 
+            user.password = undefined;
+
             return res.json(user);
         } catch (error) {
             return res.json(error)
