@@ -9,6 +9,11 @@ module.exports = {
         for (let i = 0; i < poems.length; i++) {
             let user = await User.findByPk(poems[i].user_id);
 
+            user.password = undefined;
+            user.password_reset_expires = undefined;
+            user.password_reset_token = undefined;
+            user.confirmed = undefined;
+
             poems[i].user_id = user;
         }
 
@@ -23,6 +28,11 @@ module.exports = {
             if (!user) return res.status(404).send({ error: 'User not found' });
 
             const poems = await Poem.findAll({ where: { user_id: user.id } });
+
+            user.password = undefined;
+            user.password_reset_expires = undefined;
+            user.password_reset_token = undefined;
+            user.confirmed = undefined;
 
             for (let i = 0; i < poems.length; i++) {
                 poems[i].user_id = user;
@@ -129,8 +139,9 @@ module.exports = {
             const user = await User.findByPk(poem.user_id);
 
             user.password = undefined;
-            user.password_reset_token = undefined;
             user.password_reset_expires = undefined;
+            user.password_reset_token = undefined;
+            user.confirmed = undefined;
 
             if (!poem) return res.status(404).send({ error: 'Poem not found' });
 
